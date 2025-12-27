@@ -7,6 +7,9 @@
 // Graphics configuration.
 #ifndef TIGR_HEADLESS
 #define TIGR_GAPI_GL
+
+// Calculates the biggest scale that a bitmap can fit into an area at.
+int tigrCalcScale(int bmpW, int bmpH, int areaW, int areaH);
 #endif
 
 // Creates a new bitmap, with extra payload bytes.
@@ -14,9 +17,6 @@ Tigr* tigrBitmap2(int w, int h, int extra);
 
 // Resizes an existing bitmap.
 void tigrResize(Tigr* bmp, int w, int h);
-
-// Calculates the biggest scale that a bitmap can fit into an area at.
-int tigrCalcScale(int bmpW, int bmpH, int areaW, int areaH);
 
 // Calculates a new scale, taking minimum-scale flags into account.
 int tigrEnforceScale(int scale, int flags);
@@ -126,6 +126,7 @@ typedef struct {
 #if defined(__MACOS__)
     int mouseInView;
     int mouseButtons;
+    double frameTime;
 #endif  // __MACOS__
 #if defined(__linux__) || defined(__IOS__)
     int mouseButtons;
@@ -136,6 +137,10 @@ typedef struct {
     int numTouchPoints;
     TigrTouchPoint touchPoints[MAX_TOUCH_POINTS];
 #endif  // __ANDROID__ __IOS__
+#if defined(_WIN32) || defined(__linux__) || defined(__MACOS__)
+    float scrollDeltaX;
+    float scrollDeltaY;
+#endif  // _WIN32 __linux__ __MACOS__
 } TigrInternal;
 // ----------------------------------------------------------
 
